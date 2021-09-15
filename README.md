@@ -13,8 +13,6 @@ If you do not already have a bot token then read:
 
 ### **Docker (recommended)**
 
-`docker pull pydisco/pydisco`
-
 `docker run -i pydisco/pydisco`
 
 Enter your bot token when prompted and you're good to go.
