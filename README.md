@@ -1,10 +1,9 @@
 # pyDisco
-a lightweight Discord music bot using PyCord
+a lightweight Dockerised Discord music bot
 
-## Requirements
+## Commands
 
-1. Python3.9 or later
-2. ffmpeg
+You are able to access a list of commands to interact with the bot you've just set up by typing `-help` in a Discord text channel that both you and the bot can send and receive messages in.
 
 ## Installation
 
@@ -16,14 +15,6 @@ If you do not already have a bot token then read:
 `docker run -i pydisco/pydisco`
 
 Enter your bot token when prompted and you're good to go.
-
-### Linux
-
-TBD
-
-### Windows
-
-TBD
 
 ## FAQ
 
@@ -44,4 +35,4 @@ TBD
 
 ## Licensing
 
-pyDisco is built on PyCord (MIT) and the LGPLv3 version of ffmpeg.
+pyDisco is built with pyCord (MIT) and the LGPLv3 version of ffmpeg and is released under the AGPLv3 license.

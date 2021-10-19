@@ -10,7 +10,7 @@ __title__ = 'pyDisco'
 __author__ = 'gnu-enjoyer'
 __license__ = 'AGPLv3'
 __copyright__ = 'Copyright 2021-present gnu-enjoyer'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 import asyncio.tasks, discord, youtube_dl
 from cy_utils import lst_valid, search, download, cy_init, read_config
@@ -119,7 +119,7 @@ async def cmd_play(message):
             await message.channel.send(':play_pause: resuming')
             return
         if playing:
-            await message.channel.send(':no_entry_sign: already playing ' + lst[0])
+            await message.channel.send(':no_entry_sign: already playing https://youtu.be/' + gv.trackname)
             return
         else:
             await message.channel.send(':no_entry_sign: no track entered')
@@ -136,7 +136,7 @@ async def cmd_play(message):
 
     found_id = search(track)
 
-    if not found_id[0]:
+    if not found_id:
         await message.channel.send('no track found')
         return
 

@@ -1,5 +1,5 @@
 #cython: language_level=3
-import re, urllib.request, os.path, youtube_dl
+import re, urllib.request, urllib.error, os.path, youtube_dl
 
 cpdef interrupt(msg, int code):
     print(msg)
@@ -37,10 +37,21 @@ def lst_valid(list lst) -> bool:
     # Naughty but nice
 
 def search(query) -> list:
+    cdef list video_ids = []
     query = re.sub('[^A-Za-z0-9]+', '', query)
+
+    if len(query) == 11:
+        try:
+            html = urllib.request.urlopen('https://i.ytimg.com/vi/' + query + '/hqdefault.jpg')
+            video_ids.append(query)
+            return video_ids
+
+        except urllib.error.HTTPError as HTTPError:
+            response_status = HTTPError.code
+
     query = query.replace(' ', '+')
     html = urllib.request.urlopen('https://www.youtube.com/results?search_query=' + query)
-    cdef list video_ids = re.findall(r'watch\?v=(\S{11})', html.read().decode())
+    video_ids = re.findall(r'watch\?v=(\S{11})', html.read().decode())
 
     return video_ids
 
