@@ -1,4 +1,7 @@
 # pyDisco
+
+[![Docker Image CI](https://github.com/gnu-enjoyer/pyDisco/actions/workflows/docker-image.yml/badge.svg)](https://github.com/gnu-enjoyer/pyDisco/actions/workflows/docker-image.yml)
+
 a lightweight Dockerised Discord music bot
 
 ## Commands
