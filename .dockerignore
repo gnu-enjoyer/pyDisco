@@ -1,4 +1,6 @@
 .git
+.github
 build
 config
+venv
 **/*.exe
