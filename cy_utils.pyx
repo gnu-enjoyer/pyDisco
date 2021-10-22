@@ -1,5 +1,8 @@
 #cython: language_level=3
-import re, urllib.request, urllib.error, os.path, youtube_dl
+import re, urllib, os.path, youtube_dl
+
+SAFE_STR = " _abcdefghijklmnopqrstuvwxy0123456789zABCDEFGHIJKLMNOPQRSTUVWXYZ-"
+REGEX = r"(\/|%3D|v=|vi=)([0-9A-z-_]{11})[%#?&\s]"
 
 cpdef interrupt(msg, int code):
     print(msg)
@@ -30,29 +33,23 @@ cpdef read_config():
     else:
         interrupt('ERROR: config file not found', 1)
 
-
 def lst_valid(list lst) -> bool:
     cdef list lst2 = []
     if lst2 != lst: return True
     # Naughty but nice
 
 def search(query) -> list:
-    cdef list video_ids = []
-    query = re.sub('[^A-Za-z0-9]+', '', query)
+    video_ids = []
+    parsed_url = re.search(REGEX, query + "\n", flags=0)
 
-    if len(query) == 11:
-        try:
-            html = urllib.request.urlopen('https://i.ytimg.com/vi/' + query + '/hqdefault.jpg')
-            video_ids.append(query)
-            return video_ids
+    if parsed_url is None:
+        escaped_str = re.sub('[^%s]' % SAFE_STR, '', query)
+        query = escaped_str.replace(' ', '+')
+        html = urllib.request.urlopen('https://www.youtube.com/results?search_query=' + query)
+        video_ids = re.findall(r'watch\?v=(\S{11})', html.read().decode())
+        return video_ids
 
-        except urllib.error.HTTPError as HTTPError:
-            response_status = HTTPError.code
-
-    query = query.replace(' ', '+')
-    html = urllib.request.urlopen('https://www.youtube.com/results?search_query=' + query)
-    video_ids = re.findall(r'watch\?v=(\S{11})', html.read().decode())
-
+    video_ids.append(parsed_url.group(2))
     return video_ids
 
 def download(url, g_id) -> str:

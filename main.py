@@ -10,7 +10,7 @@ __title__ = 'pyDisco'
 __author__ = 'gnu-enjoyer'
 __license__ = 'AGPLv3'
 __copyright__ = 'Copyright 2021-present gnu-enjoyer'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 import asyncio.tasks, discord, youtube_dl
 from cy_utils import lst_valid, search, download, cy_init, read_config
@@ -91,6 +91,7 @@ async def playnext(message):
         await message.channel.send(':play_pause: up next: ' + nxt)
     else:
         await message.channel.send(':stop_button: no more items in queue')
+        await gv.disconnect()
 
 
 async def cmd_debug(message):
@@ -285,10 +286,10 @@ async def on_message(message):
     if not message.content.startswith(client.prefix):
         return
 
-    if message.content.split()[0][1:] in commands:
+    if message.content.split()[0][1:].casefold() in commands:
         if not message.author.voice:
             return
-        run = str(message.content.split()[0])
+        run = str(message.content.split()[0].casefold())
         await globals()['cmd_' + run[1:]](message)
         return
 
